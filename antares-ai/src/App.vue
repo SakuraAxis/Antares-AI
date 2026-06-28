@@ -88,7 +88,7 @@ function openImage(event: Event) {
       <div class="mb-8 flex items-center justify-between">
 
         <h1 class="text-xl font-semibold">
-          Vibrance Lab
+          Antares Lab
         </h1>
 
       </div>
