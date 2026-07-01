@@ -4,14 +4,20 @@ import { ref } from "vue";
 const props = defineProps<{
   vibrance: number;
   highlightsShadows: number;
+  temperature: number;
+  tint: number;
 }>();
 
 const emit = defineEmits<{
   "update:vibrance": [value: number];
   "update:highlightsShadows": [value: number];
+  "update:temperature": [value: number];
+  "update:tint": [value: number];
   "update:canvasEl": [el: HTMLCanvasElement | null];
   "vibrance-input": [];
   "highlights-shadows-input": [];
+  "temperature-input": [];
+  "tint-input": [];
 }>();
 
 const showControls = ref(false);
@@ -27,6 +33,18 @@ function onHighlightsShadowsChange(event: Event) {
   const input = event.target as HTMLInputElement;
   emit("update:highlightsShadows", Number(input.value));
   emit("highlights-shadows-input");
+}
+
+function onTemperatureChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  emit("update:temperature", Number(input.value));
+  emit("temperature-input");
+}
+
+function onTintChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  emit("update:tint", Number(input.value));
+  emit("tint-input");
 }
 
 function onPointerDown() {
@@ -56,6 +74,42 @@ function onPointerUp() {
       ]"
     >
       <div class="w-80 space-y-5 rounded-xl bg-white/90 p-4 shadow-lg ring-1 ring-black/5 backdrop-blur">
+        <div>
+          <input
+            :value="temperature"
+            type="range"
+            min="-100"
+            max="100"
+            class="w-full accent-black"
+            @input="onTemperatureChange"
+            @pointerdown="onPointerDown"
+            @pointerup="onPointerUp"
+            @pointercancel="onPointerUp"
+          />
+
+          <p class="mt-2 text-center text-sm text-neutral-500">
+            Temperature {{ temperature }}
+          </p>
+        </div>
+
+        <div>
+          <input
+            :value="tint"
+            type="range"
+            min="-100"
+            max="100"
+            class="w-full accent-black"
+            @input="onTintChange"
+            @pointerdown="onPointerDown"
+            @pointerup="onPointerUp"
+            @pointercancel="onPointerUp"
+          />
+
+          <p class="mt-2 text-center text-sm text-neutral-500">
+            Tint {{ tint }}
+          </p>
+        </div>
+
         <div>
           <input
             :value="highlightsShadows"

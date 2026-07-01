@@ -3,6 +3,7 @@ import type { Ref } from "vue";
 
 import { CanvasEngine } from "../core/CanvasEngine";
 import { HighlightsShadowsFilter } from "../filters/HighlightsShadowsFilter";
+import { TemperatureTintFilter } from "../filters/TemperatureTintFilter";
 import { VibranceFilter } from "../filters/VibranceFilter";
 import type { ImageFilter } from "../filters/ImageFilter";
 
@@ -17,16 +18,25 @@ function cloneImageData(imageData: ImageData): ImageData {
 export function useImageEditor(canvasRef: Ref<HTMLCanvasElement | null>) {
   const vibrance = ref(0);
   const highlightsShadows = ref(0);
+  const temperature = ref(0);
+  const tint = ref(0);
 
   let engine: CanvasEngine | null = null;
   let originalImageData: ImageData | null = null;
 
+  const temperatureTintFilter = new TemperatureTintFilter();
   const vibranceFilter = new VibranceFilter();
   const highlightsShadowsFilter = new HighlightsShadowsFilter();
+  temperatureTintFilter.temperature = temperature.value;
+  temperatureTintFilter.tint = tint.value;
   vibranceFilter.amount = vibrance.value;
   highlightsShadowsFilter.amount = highlightsShadows.value;
 
-  const filters: ImageFilter[] = [highlightsShadowsFilter, vibranceFilter];
+  const filters: ImageFilter[] = [
+    temperatureTintFilter,
+    highlightsShadowsFilter,
+    vibranceFilter,
+  ];
 
   function render() {
     if (!engine || !originalImageData) return;
@@ -47,6 +57,16 @@ export function useImageEditor(canvasRef: Ref<HTMLCanvasElement | null>) {
 
   function onHighlightsShadowsInput() {
     highlightsShadowsFilter.amount = highlightsShadows.value;
+    render();
+  }
+
+  function onTemperatureInput() {
+    temperatureTintFilter.temperature = temperature.value;
+    render();
+  }
+
+  function onTintInput() {
+    temperatureTintFilter.tint = tint.value;
     render();
   }
 
@@ -77,5 +97,15 @@ export function useImageEditor(canvasRef: Ref<HTMLCanvasElement | null>) {
     reader.readAsDataURL(file);
   }
 
-  return { vibrance, highlightsShadows, openImage, onVibranceInput, onHighlightsShadowsInput };
+  return {
+    vibrance,
+    highlightsShadows,
+    temperature,
+    tint,
+    openImage,
+    onVibranceInput,
+    onHighlightsShadowsInput,
+    onTemperatureInput,
+    onTintInput,
+  };
 }

@@ -9,9 +9,13 @@ const canvasEl = ref<HTMLCanvasElement | null>(null);
 const {
   vibrance,
   highlightsShadows,
+  temperature,
+  tint,
   openImage,
   onVibranceInput,
   onHighlightsShadowsInput,
+  onTemperatureInput,
+  onTintInput,
 } = useImageEditor(canvasEl);
 </script>
 
@@ -35,9 +39,13 @@ const {
       <ImageCanvas
         v-model:vibrance="vibrance"
         v-model:highlightsShadows="highlightsShadows"
+        v-model:temperature="temperature"
+        v-model:tint="tint"
         v-model:canvasEl="canvasEl"
         @vibrance-input="onVibranceInput"
         @highlights-shadows-input="onHighlightsShadowsInput"
+        @temperature-input="onTemperatureInput"
+        @tint-input="onTintInput"
       />
     </div>
   </main>

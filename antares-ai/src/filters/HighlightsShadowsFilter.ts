@@ -1,11 +1,8 @@
 import type { ImageFilter } from "./ImageFilter";
+import { okLabToRGB, rgbToOKLab } from "../utils/color";
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
-}
-
-function getLuma(r: number, g: number, b: number): number {
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
 function smoothstep(edge0: number, edge1: number, x: number): number {
@@ -23,30 +20,37 @@ export class HighlightsShadowsFilter implements ImageFilter {
     const isHighlightRecovery = this.amount < 0;
 
     for (let i = 0; i < data.length; i += 4) {
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
-      const luma = getLuma(r, g, b);
+      const lab = rgbToOKLab({
+        r: data[i],
+        g: data[i + 1],
+        b: data[i + 2],
+      });
 
       if (isShadowLift) {
-        // Smoothly affect only the darker range, with a gentle roll-off into midtones.
-        const shadowMask = 1 - smoothstep(28, 96, luma);
+        // Lift only darker tones in perceptual space, with a soft transition into midtones.
+        const shadowMask = 1 - smoothstep(0.16, 0.46, lab.l);
         const lift = (1 - (1 - strength) ** 2) * shadowMask * shadowMask;
-        const blend = lift * 0.72;
+        const blend = lift * 0.78;
 
-        data[i] = clamp(r + (255 - r) * blend, 0, 255);
-        data[i + 1] = clamp(g + (255 - g) * blend, 0, 255);
-        data[i + 2] = clamp(b + (255 - b) * blend, 0, 255);
+        lab.l = clamp(lab.l + (1 - lab.l) * blend, 0, 1);
+        lab.a *= 1 - 0.08 * blend;
+        lab.b *= 1 - 0.08 * blend;
       } else if (isHighlightRecovery) {
-        // Smoothly affect only the brighter range, with a soft shoulder near the threshold.
-        const highlightMask = smoothstep(174, 242, luma);
+        // Compress only brighter tones, keeping the shoulder soft and avoiding flat-looking whites.
+        const highlightMask = smoothstep(0.56, 0.92, lab.l);
         const recovery = (1 - (1 - strength) ** 2) * highlightMask * highlightMask;
-        const blend = recovery * 0.68;
+        const blend = recovery * 0.72;
 
-        data[i] = clamp(r - r * blend, 0, 255);
-        data[i + 1] = clamp(g - g * blend, 0, 255);
-        data[i + 2] = clamp(b - b * blend, 0, 255);
+        lab.l = clamp(lab.l - lab.l * blend, 0, 1);
+        lab.a *= 1 - 0.05 * blend;
+        lab.b *= 1 - 0.05 * blend;
       }
+
+      const rgb = okLabToRGB(lab);
+
+      data[i] = clamp(rgb.r, 0, 255);
+      data[i + 1] = clamp(rgb.g, 0, 255);
+      data[i + 2] = clamp(rgb.b, 0, 255);
     }
 
     return imageData;
