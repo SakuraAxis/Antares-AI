@@ -11,11 +11,17 @@ const {
   highlightsShadows,
   temperature,
   tint,
+  duotone,
+  duotoneDark,
+  duotoneLight,
   openImage,
   onVibranceInput,
   onHighlightsShadowsInput,
   onTemperatureInput,
   onTintInput,
+  onDuotoneInput,
+  onDuotoneDarkInput,
+  onDuotoneLightInput,
 } = useImageEditor(canvasEl);
 </script>
 
@@ -41,11 +47,17 @@ const {
         v-model:highlightsShadows="highlightsShadows"
         v-model:temperature="temperature"
         v-model:tint="tint"
+        v-model:duotone="duotone"
+        v-model:duotoneDark="duotoneDark"
+        v-model:duotoneLight="duotoneLight"
         v-model:canvasEl="canvasEl"
         @vibrance-input="onVibranceInput"
         @highlights-shadows-input="onHighlightsShadowsInput"
         @temperature-input="onTemperatureInput"
         @tint-input="onTintInput"
+        @duotone-input="onDuotoneInput"
+        @duotone-dark-input="onDuotoneDarkInput"
+        @duotone-light-input="onDuotoneLightInput"
       />
     </div>
   </main>

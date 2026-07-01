@@ -2,10 +2,24 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 
 import { CanvasEngine } from "../core/CanvasEngine";
+import { DuotoneFilter } from "../filters/DuotoneFilter";
 import { HighlightsShadowsFilter } from "../filters/HighlightsShadowsFilter";
 import { TemperatureTintFilter } from "../filters/TemperatureTintFilter";
 import { VibranceFilter } from "../filters/VibranceFilter";
 import type { ImageFilter } from "../filters/ImageFilter";
+
+type RGBColor = { r: number; g: number; b: number };
+
+function hexToRgb(hex: string): RGBColor {
+  const normalized = hex.replace("#", "");
+  const parsed = Number.parseInt(normalized, 16);
+
+  return {
+    r: (parsed >> 16) & 255,
+    g: (parsed >> 8) & 255,
+    b: parsed & 255,
+  };
+}
 
 function cloneImageData(imageData: ImageData): ImageData {
   return new ImageData(
@@ -20,6 +34,9 @@ export function useImageEditor(canvasRef: Ref<HTMLCanvasElement | null>) {
   const highlightsShadows = ref(0);
   const temperature = ref(0);
   const tint = ref(0);
+  const duotone = ref(0);
+  const duotoneDark = ref("#000000");
+  const duotoneLight = ref("#ffffff");
 
   let engine: CanvasEngine | null = null;
   let originalImageData: ImageData | null = null;
@@ -27,15 +44,22 @@ export function useImageEditor(canvasRef: Ref<HTMLCanvasElement | null>) {
   const temperatureTintFilter = new TemperatureTintFilter();
   const vibranceFilter = new VibranceFilter();
   const highlightsShadowsFilter = new HighlightsShadowsFilter();
+  const duotoneFilter = new DuotoneFilter();
   temperatureTintFilter.temperature = temperature.value;
   temperatureTintFilter.tint = tint.value;
   vibranceFilter.amount = vibrance.value;
   highlightsShadowsFilter.amount = highlightsShadows.value;
+    duotoneFilter.amount = duotone.value;
+  duotoneFilter.setColors(
+    hexToRgb(duotoneDark.value),
+    hexToRgb(duotoneLight.value)
+  );
 
   const filters: ImageFilter[] = [
     temperatureTintFilter,
     highlightsShadowsFilter,
     vibranceFilter,
+    duotoneFilter,
   ];
 
   function render() {
@@ -70,6 +94,27 @@ export function useImageEditor(canvasRef: Ref<HTMLCanvasElement | null>) {
     render();
   }
 
+  function onDuotoneInput() {
+    duotoneFilter.amount = duotone.value;
+    render();
+  }
+
+  function applyDuotoneColors() {
+    duotoneFilter.setColors(
+      hexToRgb(duotoneDark.value),
+      hexToRgb(duotoneLight.value)
+    );
+    render();
+  }
+
+  function onDuotoneDarkInput() {
+    applyDuotoneColors();
+  }
+
+  function onDuotoneLightInput() {
+    applyDuotoneColors();
+  }
+
   function openImage(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) return;
@@ -102,10 +147,16 @@ export function useImageEditor(canvasRef: Ref<HTMLCanvasElement | null>) {
     highlightsShadows,
     temperature,
     tint,
+    duotone,
+    duotoneDark,
+    duotoneLight,
     openImage,
     onVibranceInput,
     onHighlightsShadowsInput,
     onTemperatureInput,
     onTintInput,
+    onDuotoneInput,
+    onDuotoneDarkInput,
+    onDuotoneLightInput,
   };
 }

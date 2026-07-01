@@ -6,6 +6,9 @@ const props = defineProps<{
   highlightsShadows: number;
   temperature: number;
   tint: number;
+  duotone: number;
+  duotoneDark: string;
+  duotoneLight: string;
 }>();
 
 const emit = defineEmits<{
@@ -13,11 +16,17 @@ const emit = defineEmits<{
   "update:highlightsShadows": [value: number];
   "update:temperature": [value: number];
   "update:tint": [value: number];
+  "update:duotone": [value: number];
+  "update:duotoneDark": [value: string];
+  "update:duotoneLight": [value: string];
   "update:canvasEl": [el: HTMLCanvasElement | null];
   "vibrance-input": [];
   "highlights-shadows-input": [];
   "temperature-input": [];
   "tint-input": [];
+  "duotone-input": [];
+  "duotone-dark-input": [];
+  "duotone-light-input": [];
 }>();
 
 const showControls = ref(false);
@@ -47,6 +56,24 @@ function onTintChange(event: Event) {
   emit("tint-input");
 }
 
+function onDuotoneChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  emit("update:duotone", Number(input.value));
+  emit("duotone-input");
+}
+
+function onDuotoneDarkChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  emit("update:duotoneDark", input.value);
+  emit("duotone-dark-input");
+}
+
+function onDuotoneLightChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  emit("update:duotoneLight", input.value);
+  emit("duotone-light-input");
+}
+
 function onPointerDown() {
   dragging.value = true;
 }
@@ -74,6 +101,44 @@ function onPointerUp() {
       ]"
     >
       <div class="w-80 space-y-5 rounded-xl bg-white/90 p-4 shadow-lg ring-1 ring-black/5 backdrop-blur">
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block">
+            <input
+              :value="duotoneDark"
+              type="color"
+              class="h-11 w-full cursor-pointer rounded border border-neutral-300 bg-white p-1"
+              @input="onDuotoneDarkChange"
+            />
+          </label>
+
+          <label class="block">
+            <input
+              :value="duotoneLight"
+              type="color"
+              class="h-11 w-full cursor-pointer rounded border border-neutral-300 bg-white p-1"
+              @input="onDuotoneLightChange"
+            />
+          </label>
+        </div>
+
+        <div>
+          <input
+            :value="duotone"
+            type="range"
+            min="0"
+            max="100"
+            class="w-full accent-black"
+            @input="onDuotoneChange"
+            @pointerdown="onPointerDown"
+            @pointerup="onPointerUp"
+            @pointercancel="onPointerUp"
+          />
+
+          <p class="mt-2 text-center text-sm text-neutral-500">
+            Duotone / Gradient {{ duotone }}
+          </p>
+        </div>
+
         <div>
           <input
             :value="temperature"
