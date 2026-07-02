@@ -1,12 +1,12 @@
-mod vibrance;
 mod highlights_shadows;
 mod temperature_tint;
+mod vibrance;
 
 use std::cell::RefCell;
 
-pub use vibrance::VibrancePipeline;
 pub use highlights_shadows::HighlightsShadowsPipeline;
 pub use temperature_tint::TemperatureTintPipeline;
+pub use vibrance::VibrancePipeline;
 
 thread_local! {
     static GPU_STATE: RefCell<Option<GpuState>> = const { RefCell::new(None) };
@@ -19,7 +19,6 @@ pub struct GpuState {
     pub highlights_shadows: HighlightsShadowsPipeline,
     pub temperature_tint: TemperatureTintPipeline,
 }
-
 
 pub async fn init() -> Result<(), String> {
     let instance = wgpu::Instance::default();

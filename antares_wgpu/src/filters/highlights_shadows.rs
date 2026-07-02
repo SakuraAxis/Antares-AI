@@ -8,7 +8,11 @@ pub async fn apply_highlights_shadows(
     amount: f32,
 ) -> Result<(), String> {
     let (device, queue, hs) = gpu::with_gpu_state(|s| {
-        (s.device.clone(), s.queue.clone(), s.highlights_shadows.clone())
+        (
+            s.device.clone(),
+            s.queue.clone(),
+            s.highlights_shadows.clone(),
+        )
     })?;
     let owned = data.to_vec();
     let result = hs

@@ -3,16 +3,14 @@ use wasm_bindgen::prelude::*;
 mod filters;
 mod gpu;
 
-use filters::apply_vibrance;
 use filters::apply_highlights_shadows;
 use filters::apply_temperature_tint;
+use filters::apply_vibrance;
 
 /// Initialize WebGPU device and filter pipelines.
 #[wasm_bindgen(js_name = initFilterEngine)]
 pub async fn init_filter_engine() -> Result<(), JsValue> {
-    gpu::init()
-        .await
-        .map_err(|e| JsValue::from_str(&e))
+    gpu::init().await.map_err(|e| JsValue::from_str(&e))
 }
 
 /// Apply vibrance filter using WGPU compute shader.

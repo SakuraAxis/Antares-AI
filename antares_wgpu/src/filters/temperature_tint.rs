@@ -9,7 +9,11 @@ pub async fn apply_temperature_tint(
     tint: f32,
 ) -> Result<(), String> {
     let (device, queue, tt) = gpu::with_gpu_state(|s| {
-        (s.device.clone(), s.queue.clone(), s.temperature_tint.clone())
+        (
+            s.device.clone(),
+            s.queue.clone(),
+            s.temperature_tint.clone(),
+        )
     })?;
     let owned = data.to_vec();
     let result = tt

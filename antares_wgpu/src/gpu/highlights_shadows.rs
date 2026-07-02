@@ -6,7 +6,7 @@ use wgpu::util::DeviceExt;
 struct HighlightsShadowsParams {
     width: u32,
     height: u32,
-    strength: f32,   // abs(amount) / 100.0
+    strength: f32,    // abs(amount) / 100.0
     amount_sign: f32, // amount / 100.0 ( sign determines shadow lift vs highlight recovery )
 }
 
@@ -162,13 +162,7 @@ impl HighlightsShadowsPipeline {
             pass.dispatch_workgroups(workgroups_x, workgroups_y, 1);
         }
 
-        encoder.copy_buffer_to_buffer(
-            &pixel_buffer,
-            0,
-            &staging_buffer,
-            0,
-            staging_buffer.size(),
-        );
+        encoder.copy_buffer_to_buffer(&pixel_buffer, 0, &staging_buffer, 0, staging_buffer.size());
 
         queue.submit(Some(encoder.finish()));
 
@@ -178,9 +172,9 @@ impl HighlightsShadowsPipeline {
             let _ = sender.send(result);
         });
 
-        device.poll(wgpu::PollType::wait_indefinitely()).map_err(|e| {
-            format!("Failed while waiting for GPU readback: {e:?}")
-        })?;
+        device
+            .poll(wgpu::PollType::wait_indefinitely())
+            .map_err(|e| format!("Failed while waiting for GPU readback: {e:?}"))?;
 
         receiver
             .await
