@@ -1,8 +1,10 @@
 mod vibrance;
+mod highlights_shadows;
 
 use std::cell::RefCell;
 
 pub use vibrance::VibrancePipeline;
+pub use highlights_shadows::HighlightsShadowsPipeline;
 
 thread_local! {
     static GPU_STATE: RefCell<Option<GpuState>> = const { RefCell::new(None) };
@@ -12,6 +14,7 @@ pub struct GpuState {
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
     pub vibrance: VibrancePipeline,
+    pub highlights_shadows: HighlightsShadowsPipeline,
 }
 
 
@@ -41,12 +44,14 @@ pub async fn init() -> Result<(), String> {
         .map_err(|e| format!("Failed to create GPU device: {e}"))?;
 
     let vibrance = VibrancePipeline::new(&device);
+    let highlights_shadows = HighlightsShadowsPipeline::new(&device);
 
     GPU_STATE.with(|state| {
         *state.borrow_mut() = Some(GpuState {
             device,
             queue,
             vibrance,
+            highlights_shadows,
         });
     });
 
