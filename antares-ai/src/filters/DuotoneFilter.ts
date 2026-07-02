@@ -33,6 +33,11 @@ function mixColor(
 export class DuotoneFilter implements ImageFilter {
   amount = 100;
 
+  // Adjusts the contrast curve of the duotone mapping
+  // Values < 1 brighten midtones, values > 1 darken them
+  // Range : 0.6 - 1.4, default : 0.82
+  contrastCurve = 0.82;
+
   darkColor = { r: 43, g: 12, b: 86 };
   lightColor = { r: 255, g: 72, b: 176 };
 
@@ -53,14 +58,12 @@ export class DuotoneFilter implements ImageFilter {
       const g = data[i + 1];
       const b = data[i + 2];
 
-      // Perceptual grayscale / luminance used as the gradient-map lookup.
-      const gray =
-        0.2126 * r +
-        0.7152 * g +
-        0.0722 * b;
+      // Use OKLab L channel for perceptually uniform luminance
+      const lab = rgbToOKLab({ r, g, b });
+      const luma = lab.l; // Range : 0-1, perceptually uniform
 
-      const t = smoothstep(0, 255, gray);
-      const lifted = t ** 0.82;
+      const t = smoothstep(0, 1, luma);
+      const lifted = t ** this.contrastCurve;
       const mapped = mixColor(this.darkColor, this.lightColor, lifted);
 
       data[i] = clamp(mix(r, mapped.r, strength), 0, 255);
