@@ -7,7 +7,9 @@ pub async fn apply_vibrance(
     height: u32,
     amount: f32,
 ) -> Result<(), String> {
-    let (device, queue, vibrance) = gpu::get_handles()?;
+    let (device, queue, vibrance) = gpu::with_gpu_state(|s| {
+        (s.device.clone(), s.queue.clone(), s.vibrance.clone())
+    })?;
     let owned = data.to_vec();
     let result = vibrance
         .apply(&device, &queue, owned, width, height, amount)

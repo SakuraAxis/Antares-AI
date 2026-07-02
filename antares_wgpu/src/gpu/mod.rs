@@ -14,6 +14,7 @@ pub struct GpuState {
     pub vibrance: VibrancePipeline,
 }
 
+
 pub async fn init() -> Result<(), String> {
     let instance = wgpu::Instance::default();
 
@@ -52,16 +53,24 @@ pub async fn init() -> Result<(), String> {
     Ok(())
 }
 
-pub fn get_handles() -> Result<(wgpu::Device, wgpu::Queue, VibrancePipeline), String> {
+/// Run a closure with access to the GPU state.
+/// Use this to clone the device, queue, and the specific pipeline needed.
+///
+/// # Example
+/// ```rust
+/// let (device, queue, vibrance) = gpu::with_gpu_state(|s| {
+///     (s.device.clone(), s.queue.clone(), s.vibrance.clone())
+/// })?;
+/// ```
+pub fn with_gpu_state<F, T>(f: F) -> Result<T, String>
+where
+    F: FnOnce(&GpuState) -> T,
+{
     GPU_STATE.with(|state| {
         let state = state.borrow();
         let gpu = state
             .as_ref()
             .ok_or_else(|| "GPU not initialized. Call initFilterEngine() first.".to_string())?;
-        Ok((
-            gpu.device.clone(),
-            gpu.queue.clone(),
-            gpu.vibrance.clone(),
-        ))
+        Ok(f(gpu))
     })
 }
