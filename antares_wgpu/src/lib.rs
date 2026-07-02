@@ -5,6 +5,7 @@ mod gpu;
 
 use filters::apply_vibrance;
 use filters::apply_highlights_shadows;
+use filters::apply_temperature_tint;
 
 /// Initialize WebGPU device and filter pipelines.
 #[wasm_bindgen(js_name = initFilterEngine)]
@@ -36,6 +37,20 @@ pub async fn apply_highlights_shadows_filter(
     amount: f32,
 ) -> Result<(), JsValue> {
     apply_highlights_shadows(data, width, height, amount)
+        .await
+        .map_err(|e| JsValue::from_str(&e))
+}
+
+/// Apply temperature and tint filter using WGPU compute shader.
+#[wasm_bindgen(js_name = applyTemperatureTintFilter)]
+pub async fn apply_temperature_tint_filter(
+    data: &mut [u8],
+    width: u32,
+    height: u32,
+    temperature: f32,
+    tint: f32,
+) -> Result<(), JsValue> {
+    apply_temperature_tint(data, width, height, temperature, tint)
         .await
         .map_err(|e| JsValue::from_str(&e))
 }

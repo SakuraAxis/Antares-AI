@@ -1,10 +1,12 @@
 mod vibrance;
 mod highlights_shadows;
+mod temperature_tint;
 
 use std::cell::RefCell;
 
 pub use vibrance::VibrancePipeline;
 pub use highlights_shadows::HighlightsShadowsPipeline;
+pub use temperature_tint::TemperatureTintPipeline;
 
 thread_local! {
     static GPU_STATE: RefCell<Option<GpuState>> = const { RefCell::new(None) };
@@ -15,6 +17,7 @@ pub struct GpuState {
     pub queue: wgpu::Queue,
     pub vibrance: VibrancePipeline,
     pub highlights_shadows: HighlightsShadowsPipeline,
+    pub temperature_tint: TemperatureTintPipeline,
 }
 
 
@@ -45,6 +48,7 @@ pub async fn init() -> Result<(), String> {
 
     let vibrance = VibrancePipeline::new(&device);
     let highlights_shadows = HighlightsShadowsPipeline::new(&device);
+    let temperature_tint = TemperatureTintPipeline::new(&device);
 
     GPU_STATE.with(|state| {
         *state.borrow_mut() = Some(GpuState {
@@ -52,6 +56,7 @@ pub async fn init() -> Result<(), String> {
             queue,
             vibrance,
             highlights_shadows,
+            temperature_tint,
         });
     });
 

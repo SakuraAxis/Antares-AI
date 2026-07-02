@@ -1,4 +1,4 @@
-import init, { applyVibranceFilter, applyHighlightsShadowsFilter, initFilterEngine } from '../../../antares_wgpu/pkg/antares_wgpu.js';
+import init, { applyVibranceFilter, applyHighlightsShadowsFilter, applyTemperatureTintFilter, initFilterEngine } from '../../../antares_wgpu/pkg/antares_wgpu.js';
 import wasmUrl from '../../../antares_wgpu/pkg/antares_wgpu_bg.wasm?url';
 
 /**
@@ -38,6 +38,17 @@ export class WasmFilterEngine {
   async applyHighlightsShadows(imageData: ImageData, amount: number): Promise<void> {
     this.ensureInitialized();
     await applyHighlightsShadowsFilter(imageData.data, imageData.width, imageData.height, amount);
+  }
+
+  /**
+   * Apply temperature and tint filter via WGPU compute shader
+   * @param imageData - ImageData from canvas context
+   * @param temperature - Temperature ( -100 to +100 )
+   * @param tint - Tint ( -100 to +100 )
+   */
+  async applyTemperatureTint(imageData: ImageData, temperature: number, tint: number): Promise<void> {
+    this.ensureInitialized();
+    await applyTemperatureTintFilter(imageData.data, imageData.width, imageData.height, temperature, tint);
   }
 
   private ensureInitialized(): void {
