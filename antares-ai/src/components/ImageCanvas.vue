@@ -105,14 +105,14 @@ function onPointerUp() {
           <input
             :value="duotoneDark"
             type="color"
-            class="h-9 w-9 cursor-pointer rounded-full border border-neutral-200/80 bg-transparent p-0 transition hover:scale-110 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full"
+            class="color-selector-style"
             @input="onDuotoneDarkChange"
           />
 
           <input
             :value="duotoneLight"
             type="color"
-            class="h-9 w-9 cursor-pointer rounded-full border border-neutral-200/80 bg-transparent p-0 transition hover:scale-110 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full"
+            class="color-selector-style"
             @input="onDuotoneLightChange"
           />
         </div>
