@@ -101,24 +101,20 @@ function onPointerUp() {
       ]"
     >
       <div class="w-80 space-y-5 rounded-xl bg-white/90 p-4 shadow-lg ring-1 ring-black/5 backdrop-blur">
-        <div class="grid grid-cols-2 gap-3">
-          <label class="block">
-            <input
-              :value="duotoneDark"
-              type="color"
-              class="h-11 w-full cursor-pointer rounded border border-neutral-300 bg-white p-1"
-              @input="onDuotoneDarkChange"
-            />
-          </label>
+        <div class="flex gap-2">
+          <input
+            :value="duotoneDark"
+            type="color"
+            class="h-9 w-9 cursor-pointer rounded-full border border-neutral-200/80 bg-transparent p-0 transition hover:scale-110 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full"
+            @input="onDuotoneDarkChange"
+          />
 
-          <label class="block">
-            <input
-              :value="duotoneLight"
-              type="color"
-              class="h-11 w-full cursor-pointer rounded border border-neutral-300 bg-white p-1"
-              @input="onDuotoneLightChange"
-            />
-          </label>
+          <input
+            :value="duotoneLight"
+            type="color"
+            class="h-9 w-9 cursor-pointer rounded-full border border-neutral-200/80 bg-transparent p-0 transition hover:scale-110 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full"
+            @input="onDuotoneLightChange"
+          />
         </div>
 
         <div>

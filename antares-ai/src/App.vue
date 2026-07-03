@@ -31,10 +31,6 @@ const activeEditor = () => wasmEditor;
         </label>
       </div>
 
-      <div class="mb-4 text-center text-sm text-gray-600">
-        <span>Using Rust WASM for all filters</span>
-      </div>
-
       <div>
         <ImageCanvas
           v-model:vibrance="wasmEditor.vibrance.value"
