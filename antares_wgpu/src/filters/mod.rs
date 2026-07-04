@@ -1,8 +1,10 @@
+pub mod brightness;
 pub mod duotone;
 pub mod highlights_shadows;
 pub mod temperature_tint;
 pub mod vibrance;
 
+pub use brightness::apply_brightness;
 pub use duotone::apply_duotone;
 pub use highlights_shadows::apply_highlights_shadows;
 pub use temperature_tint::apply_temperature_tint;

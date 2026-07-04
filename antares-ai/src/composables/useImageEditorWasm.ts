@@ -2,6 +2,7 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 
 import { CanvasEngine } from "../core/CanvasEngine";
+import { BrightnessFilterWasm } from "../filters/BrightnessFilterWasm";
 import { DuotoneFilterWasm } from "../filters/DuotoneFilterWasm";
 import { HighlightsShadowsFilterWasm } from "../filters/HighlightsShadowsFilterWasm";
 import { TemperatureTintFilterWasm } from "../filters/TemperatureTintFilterWasm";
@@ -31,6 +32,7 @@ function cloneImageData(imageData: ImageData): ImageData {
 
 export function useImageEditorWasm(canvasRef: Ref<HTMLCanvasElement | null>) {
   const vibrance = ref(0);
+  const brightness = ref(0);
   const highlightsShadows = ref(0);
   const temperature = ref(0);
   const tint = ref(0);
@@ -43,12 +45,14 @@ export function useImageEditorWasm(canvasRef: Ref<HTMLCanvasElement | null>) {
   let wasmInitialized = false;
 
   const temperatureTintFilter = new TemperatureTintFilterWasm();
+  const brightnessFilter = new BrightnessFilterWasm();
   const vibranceFilter = new VibranceFilterWasm();
   const highlightsShadowsFilter = new HighlightsShadowsFilterWasm();
   const duotoneFilter = new DuotoneFilterWasm();
   
   temperatureTintFilter.temperature = temperature.value;
   temperatureTintFilter.tint = tint.value;
+  brightnessFilter.amount = brightness.value;
   vibranceFilter.amount = vibrance.value;
   highlightsShadowsFilter.amount = highlightsShadows.value;
   duotoneFilter.amount = duotone.value;
@@ -71,11 +75,17 @@ export function useImageEditorWasm(canvasRef: Ref<HTMLCanvasElement | null>) {
 
     // Apply WASM filters
     await temperatureTintFilter.apply(image);
+    await brightnessFilter.apply(image);
     await highlightsShadowsFilter.apply(image);
     await vibranceFilter.apply(image);
     await duotoneFilter.apply(image);
 
     engine.putImageData(image);
+  }
+
+  function onBrightnessInput() {
+    brightnessFilter.amount = brightness.value;
+    render();
   }
 
   function onVibranceInput() {
@@ -148,6 +158,7 @@ export function useImageEditorWasm(canvasRef: Ref<HTMLCanvasElement | null>) {
 
   return {
     vibrance,
+    brightness,
     highlightsShadows,
     temperature,
     tint,
@@ -155,6 +166,7 @@ export function useImageEditorWasm(canvasRef: Ref<HTMLCanvasElement | null>) {
     duotoneDark,
     duotoneLight,
     openImage,
+    onBrightnessInput,
     onVibranceInput,
     onHighlightsShadowsInput,
     onTemperatureInput,

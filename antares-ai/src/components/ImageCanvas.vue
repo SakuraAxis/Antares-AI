@@ -2,6 +2,7 @@
 import { ref } from "vue";
 
 const props = defineProps<{
+  brightness: number;
   vibrance: number;
   highlightsShadows: number;
   temperature: number;
@@ -12,6 +13,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
+  "update:brightness": [value: number];
   "update:vibrance": [value: number];
   "update:highlightsShadows": [value: number];
   "update:temperature": [value: number];
@@ -20,6 +22,7 @@ const emit = defineEmits<{
   "update:duotoneDark": [value: string];
   "update:duotoneLight": [value: string];
   "update:canvasEl": [el: HTMLCanvasElement | null];
+  "brightness-input": [];
   "vibrance-input": [];
   "highlights-shadows-input": [];
   "temperature-input": [];
@@ -31,6 +34,12 @@ const emit = defineEmits<{
 
 const showControls = ref(false);
 const dragging = ref(false);
+
+function onBrightnessChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  emit("update:brightness", Number(input.value));
+  emit("brightness-input");
+}
 
 function onVibranceChange(event: Event) {
   const input = event.target as HTMLInputElement;
@@ -186,6 +195,24 @@ function onPointerUp() {
 
           <p class="mt-2 text-center text-sm text-neutral-500">
             Highlights & Shadows {{ highlightsShadows }}
+          </p>
+        </div>
+
+        <div>
+          <input
+            :value="brightness"
+            type="range"
+            min="-100"
+            max="100"
+            class="w-full accent-black"
+            @input="onBrightnessChange"
+            @pointerdown="onPointerDown"
+            @pointerup="onPointerUp"
+            @pointercancel="onPointerUp"
+          />
+
+          <p class="mt-2 text-center text-sm text-neutral-500">
+            Brightness {{ brightness }}
           </p>
         </div>
 

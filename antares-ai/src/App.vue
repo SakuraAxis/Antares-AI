@@ -42,6 +42,7 @@ const activeEditor = () => wasmEditor;
 
       <div>
         <ImageCanvas
+          v-model:brightness="wasmEditor.brightness.value"
           v-model:vibrance="wasmEditor.vibrance.value"
           v-model:highlightsShadows="wasmEditor.highlightsShadows.value"
           v-model:temperature="wasmEditor.temperature.value"
@@ -50,6 +51,7 @@ const activeEditor = () => wasmEditor;
           v-model:duotoneDark="wasmEditor.duotoneDark.value"
           v-model:duotoneLight="wasmEditor.duotoneLight.value"
           v-model:canvasEl="canvasWasmEl"
+          @brightness-input="wasmEditor.onBrightnessInput"
           @vibrance-input="wasmEditor.onVibranceInput"
           @highlights-shadows-input="wasmEditor.onHighlightsShadowsInput"
           @temperature-input="wasmEditor.onTemperatureInput"

@@ -5,6 +5,7 @@ mod gpu;
 
 use filters::apply_duotone;
 use filters::apply_highlights_shadows;
+use filters::apply_brightness;
 use filters::apply_temperature_tint;
 use filters::apply_vibrance;
 
@@ -23,6 +24,19 @@ pub async fn apply_vibrance_filter(
     amount: f32,
 ) -> Result<(), JsValue> {
     apply_vibrance(data, width, height, amount)
+        .await
+        .map_err(|e| JsValue::from_str(&e))
+}
+
+/// Apply brightness filter using WGPU compute shader.
+#[wasm_bindgen(js_name = applyBrightnessFilter)]
+pub async fn apply_brightness_filter(
+    data: &mut [u8],
+    width: u32,
+    height: u32,
+    amount: f32,
+) -> Result<(), JsValue> {
+    apply_brightness(data, width, height, amount)
         .await
         .map_err(|e| JsValue::from_str(&e))
 }

@@ -1,10 +1,12 @@
 mod duotone;
+mod brightness;
 mod highlights_shadows;
 mod temperature_tint;
 mod vibrance;
 
 use std::cell::RefCell;
 
+pub use brightness::BrightnessPipeline;
 pub use duotone::DuotonePipeline;
 pub use highlights_shadows::HighlightsShadowsPipeline;
 pub use temperature_tint::TemperatureTintPipeline;
@@ -17,6 +19,7 @@ thread_local! {
 pub struct GpuState {
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
+    pub brightness: BrightnessPipeline,
     pub vibrance: VibrancePipeline,
     pub highlights_shadows: HighlightsShadowsPipeline,
     pub temperature_tint: TemperatureTintPipeline,
@@ -48,6 +51,7 @@ pub async fn init() -> Result<(), String> {
         .await
         .map_err(|e| format!("Failed to create GPU device: {e}"))?;
 
+    let brightness = BrightnessPipeline::new(&device);
     let vibrance = VibrancePipeline::new(&device);
     let highlights_shadows = HighlightsShadowsPipeline::new(&device);
     let temperature_tint = TemperatureTintPipeline::new(&device);
@@ -57,6 +61,7 @@ pub async fn init() -> Result<(), String> {
         *state.borrow_mut() = Some(GpuState {
             device,
             queue,
+            brightness,
             vibrance,
             highlights_shadows,
             temperature_tint,

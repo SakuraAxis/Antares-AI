@@ -1,4 +1,4 @@
-import init, { applyVibranceFilter, applyHighlightsShadowsFilter, applyTemperatureTintFilter, applyDuotoneFilter, initFilterEngine } from '../../../antares_wgpu/pkg/antares_wgpu.js';
+import init, { applyBrightnessFilter, applyVibranceFilter, applyHighlightsShadowsFilter, applyTemperatureTintFilter, applyDuotoneFilter, initFilterEngine } from '../../../antares_wgpu/pkg/antares_wgpu.js';
 import wasmUrl from '../../../antares_wgpu/pkg/antares_wgpu_bg.wasm?url';
 
 /**
@@ -36,6 +36,16 @@ export class WasmFilterEngine {
   async applyVibrance(imageData: ImageData, amount: number): Promise<void> {
     this.ensureInitialized();
     await applyVibranceFilter(toUint8Array(imageData.data), imageData.width, imageData.height, amount);
+  }
+
+  /**
+   * Apply brightness filter via WGPU compute shader
+   * @param imageData - ImageData from canvas context
+   * @param amount - Brightness amount ( -100 to +100 )
+   */
+  async applyBrightness(imageData: ImageData, amount: number): Promise<void> {
+    this.ensureInitialized();
+    await applyBrightnessFilter(toUint8Array(imageData.data), imageData.width, imageData.height, amount);
   }
 
   /**
