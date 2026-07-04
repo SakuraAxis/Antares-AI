@@ -4,6 +4,7 @@ import { ref } from "vue";
 import AppHeader from "./components/AppHeader.vue";
 import ImageCanvas from "./components/ImageCanvas.vue";
 import { useImageEditorWasm } from "./composables/useImageEditorWasm";
+import { saveCanvasAsImage } from "./utils/images";
 
 const canvasWasmEl = ref<HTMLCanvasElement | null>(null);
 
@@ -20,7 +21,7 @@ const activeEditor = () => wasmEditor;
       <AppHeader />
 
       <div class="mb-8 flex justify-center gap-4">
-        <label class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50">
+        <label class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50 duration-200">
           Open Image
           <input
             class="hidden"
@@ -29,6 +30,13 @@ const activeEditor = () => wasmEditor;
             @change="activeEditor().openImage"
           />
         </label>
+        
+        <button
+          class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50 duration-200"
+          @click="saveCanvasAsImage(canvasWasmEl)"
+        >
+          Save Image
+        </button>
       </div>
 
       <div>
