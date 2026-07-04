@@ -3,6 +3,7 @@ import { ref } from "vue";
 
 import AppHeader from "./components/AppHeader.vue";
 import ImageCanvas from "./components/ImageCanvas.vue";
+
 import { useImageEditorWasm } from "./composables/useImageEditorWasm";
 import { saveCanvasAsImage } from "./utils/images";
 

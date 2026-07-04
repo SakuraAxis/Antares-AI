@@ -1,0 +1,7 @@
+[project]
+name = "antares-core"
+version = "0.1.0"
+description = "The backend for Antares Project"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
