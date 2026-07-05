@@ -27,3 +27,50 @@ IMPORTANT : This project is still in the development and testing stages, licensi
 Iris uses FastAPI for backend APIs and GUI integration. FastAPI is MIT licensed.
 
 Iris uses WGPU, Vue3 & Tailwind CSS for GUI showing. And uses Vite as build tool. Vue3, Vite & Tailwind CSS licensed under the MIT License. WGPU licensed under the MIT License & Apache-2.0 License.
+
+## How To Use
+
+install Rust : [https://rust-lang.org/](https://rust-lang.org/)
+
+install Node.js : [https://nodejs.org/](https://nodejs.org/)
+
+install Python : [https://www.python.org/downloads/](https://www.python.org/downloads/)
+
+Install uv : `python -m pip install --upgrade pip` => `python -m pip install uv`
+
+### step 1. Setup Frontend
+
+go to `/antares_wgpu`, run below
+
+```shell
+cargo install wasm-pack
+```
+
+( every time you change Rust code, you need to run this )
+```shell
+wasm-pack build –target web –release
+```
+
+go back to `project root`
+
+and then go to `/antares-ai`
+
+```shell
+npm install
+```
+
+## Project Dependencies Details
+
+FastAPI License : [https://github.com/fastapi/fastapi/blob/master/LICENSE](https://github.com/fastapi/fastapi/blob/master/LICENSE)
+<br>
+
+wgpu License : [https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.MIT](https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.MIT) and [another Apache-2.0 License](https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.APACHE)
+<br>
+
+Vue3 License : [https://github.com/vuejs/core/blob/main/LICENSE](https://github.com/vuejs/core/blob/main/LICENSE)
+<br>
+
+Vite License : [https://github.com/vitejs/vite/blob/main/LICENSE](https://github.com/vitejs/vite/blob/main/LICENSE)
+<br>
+
+Tailwind CSS License : [https://github.com/tailwindlabs/tailwindcss/blob/main/LICENSE](https://github.com/tailwindlabs/tailwindcss/blob/main/LICENSE)
