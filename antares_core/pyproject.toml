@@ -5,7 +5,15 @@ description = "The backend for Antares Project"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "asyncpg>=0.31.0",
     "fastapi[standard]>=0.139.0",
+    "numpy>=2.5.1",
+    "opencv-python>=5.0.0.93",
+    "pillow>=12.3.0",
+    "python-dotenv>=1.2.2",
     "python-multipart>=0.0.32",
+    "sqlalchemy>=2.0.51",
+    "torch>=2.12.1",
+    "torchvision>=0.27.1",
     "uvicorn>=0.50.0",
 ]

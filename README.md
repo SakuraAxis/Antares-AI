@@ -14,6 +14,8 @@ IMPORTANT : This project is still in the development and testing stages, licensi
 ## Project Dependencies Guide
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://github.com/fastapi/fastapi)
+[![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://github.com/pytorch/pytorch)
+[![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://github.com/opencv/opencv)
 
 **( GUI )**
 
@@ -23,6 +25,8 @@ IMPORTANT : This project is still in the development and testing stages, licensi
 [![vite](https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://github.com/vitejs/vite)
 
 **[ for Dependencies Details please see the end of this README ]**
+
+Iris uses PyTorch & OpenCV for AI Model Building. PyTorch licensed under BSD 3-Clause License. OpenCV is licensed under the Apache-2.0 License.
 
 Iris uses FastAPI for backend APIs and GUI integration. FastAPI is MIT licensed.
 
@@ -78,6 +82,12 @@ python -m uv run uvicorn main:app --reload --port 8000
 ## Project Dependencies Details
 
 FastAPI License : [https://github.com/fastapi/fastapi/blob/master/LICENSE](https://github.com/fastapi/fastapi/blob/master/LICENSE)
+<br>
+
+PyTorch License : [https://github.com/pytorch/pytorch/blob/main/LICENSE](https://github.com/pytorch/pytorch/blob/main/LICENSE)
+<br>
+
+OpenCV License : [https://github.com/opencv/opencv/blob/4.x/LICENSE](https://github.com/opencv/opencv/blob/4.x/LICENSE)
 <br>
 
 wgpu License : [https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.MIT](https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.MIT) and [another Apache-2.0 License](https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.APACHE)
