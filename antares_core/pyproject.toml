@@ -4,4 +4,8 @@ version = "0.1.0"
 description = "The backend for Antares Project"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "fastapi[standard]>=0.139.0",
+    "python-multipart>=0.0.32",
+    "uvicorn>=0.50.0",
+]
