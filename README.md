@@ -38,7 +38,7 @@ install Python : [https://www.python.org/downloads/](https://www.python.org/down
 
 Install uv : `python -m pip install --upgrade pip` => `python -m pip install uv`
 
-### step 1. Setup Frontend
+### step 1. Setup Photo Editor
 
 go to `/antares_wgpu`, run below
 
