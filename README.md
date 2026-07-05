@@ -38,7 +38,7 @@ install Python : [https://www.python.org/downloads/](https://www.python.org/down
 
 Install uv : `python -m pip install --upgrade pip` => `python -m pip install uv`
 
-### step 1. Setup Photo Editor
+### step 1. Setup Photo Editor ( Frontend )
 
 go to `/antares_wgpu`, run below
 
@@ -57,6 +57,22 @@ and then go to `/antares-ai`
 
 ```shell
 npm install
+```
+
+```shell
+npm run dev
+```
+
+### step 2. Setup Backend AI Training
+
+go to `/antares_core`
+
+```shell
+uv sync
+```
+
+```shell
+python -m uv run uvicorn main:app --reload --port 8000
 ```
 
 ## Project Dependencies Details

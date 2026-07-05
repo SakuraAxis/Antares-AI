@@ -5,7 +5,7 @@ import AppHeader from "./components/AppHeader.vue";
 import ImageCanvas from "./components/ImageCanvas.vue";
 
 import { useImageEditorWasm } from "./composables/useImageEditorWasm";
-import { saveCanvasAsImage } from "./utils/images";
+import { saveCanvasAsImage, analyzeCanvasImage } from "./utils/images";
 
 const canvasWasmEl = ref<HTMLCanvasElement | null>(null);
 
@@ -37,6 +37,13 @@ const activeEditor = () => wasmEditor;
           @click="saveCanvasAsImage(canvasWasmEl)"
         >
           Save Image
+        </button>
+
+        <button
+          class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50 duration-200"
+          @click="analyzeCanvasImage(canvasWasmEl)"
+        >
+          Store Img Data
         </button>
       </div>
 
