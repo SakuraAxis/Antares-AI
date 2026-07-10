@@ -16,6 +16,8 @@ IMPORTANT : This project is still in the development and testing stages, licensi
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://github.com/fastapi/fastapi)
 [![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://github.com/pytorch/pytorch)
 [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://github.com/opencv/opencv)
+[![Pillow](https://img.shields.io/badge/Pillow-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://github.com/python-pillow/Pillow)
+[![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white)](https://github.com/scipy/scipy)
 
 **( GUI )**
 
@@ -26,7 +28,7 @@ IMPORTANT : This project is still in the development and testing stages, licensi
 
 **[ for Dependencies Details please see the end of this README ]**
 
-Iris uses PyTorch & OpenCV for AI Model Building. PyTorch licensed under BSD 3-Clause License. OpenCV is licensed under the Apache-2.0 License.
+Iris uses PyTorch, OpenCV, Pillow & SciPy for AI Model Building. PyTorch & SciPy licensed under BSD 3-Clause License. OpenCV is licensed under the Apache-2.0 License. Pillow licensed under MIT-CMU License.
 
 Iris uses FastAPI for backend APIs and GUI integration. FastAPI is MIT licensed.
 
@@ -88,6 +90,12 @@ PyTorch License : [https://github.com/pytorch/pytorch/blob/main/LICENSE](https:/
 <br>
 
 OpenCV License : [https://github.com/opencv/opencv/blob/4.x/LICENSE](https://github.com/opencv/opencv/blob/4.x/LICENSE)
+<br>
+
+Pillow License : [https://github.com/python-pillow/Pillow/blob/main/LICENSE](https://github.com/python-pillow/Pillow/blob/main/LICENSE)
+<br>
+
+SciPy License : [https://github.com/scipy/scipy/blob/main/LICENSE.txt](https://github.com/scipy/scipy/blob/main/LICENSE.txt)
 <br>
 
 wgpu License : [https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.MIT](https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.MIT) and [another Apache-2.0 License](https://github.com/gfx-rs/wgpu/blob/trunk/LICENSE.APACHE)
