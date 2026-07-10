@@ -13,9 +13,7 @@ from features.image_analyzer import ImageAnalyzer
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    print("Database tables created")
+    print("Application started ( use Alembic for database migrations )")
     
     yield
     
