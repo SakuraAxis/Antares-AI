@@ -56,7 +56,7 @@ python -m uv sync
 
 create `.env` at `antares_core\.env`
 
-example ( $yourpassword = your PostgreSQL password )
+example ( $yourpassword = your PostgreSQL password ) :
 ```
 DATABASE_URL=postgresql+asyncpg://postgres:yourpassword@localhost:5432/antares_db
 ```
