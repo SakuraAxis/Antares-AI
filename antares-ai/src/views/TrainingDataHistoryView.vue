@@ -212,144 +212,192 @@ onMounted(loadAll);
 </script>
 
 <template>
-  <main class="min-h-screen bg-neutral-50">
+  <main class="min-h-screen bg-white text-neutral-900">
     <div class="mx-auto max-w-7xl p-8">
       <AppHeader />
 
-      <div class="mb-6 flex flex-wrap items-end gap-3 rounded-xl border border-sky-200 bg-sky-50 p-4 shadow-sm">
-        <RouterLink class="rounded border border-sky-200 px-4 py-2 text-sky-900" to="/">Back Home</RouterLink>
+      <div class="mb-6 flex flex-wrap items-center justify-center gap-3">
+        <RouterLink
+          class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50 duration-200"
+          to="/"
+        >
+          back home
+        </RouterLink>
       </div>
 
-      <p v-if="errorMessage" class="mb-4 rounded border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">{{ errorMessage }}</p>
-      <p v-if="loading" class="mb-4 text-sm text-neutral-600">Loading...</p>
+      <p
+        v-if="errorMessage"
+        class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-2 font-mono text-xs text-red-600"
+      >
+        {{ errorMessage }}
+      </p>
+      <p
+        v-if="loading"
+        class="mb-4 font-mono text-xs text-neutral-400"
+      >
+        loading…
+      </p>
 
-      <section class="mb-8 rounded-2xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
-        <div class="mb-3 flex items-center justify-between">
-          <h2 class="text-lg font-semibold text-amber-950">images</h2>
-          <span class="rounded-full bg-amber-200 px-3 py-1 text-xs font-medium text-amber-950">{{ focusedImageRows.length }} rows</span>
-        </div>
-        <div class="overflow-x-auto rounded-lg border border-amber-200 bg-white">
-          <table class="min-w-full border-collapse text-sm">
-            <thead class="bg-amber-100 text-left">
+      <!-- images -->
+      <section class="mb-8 rounded-lg border border-neutral-300">
+        <header class="flex items-center justify-between border-b border-neutral-300 px-4 py-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2.5 w-2.5 rounded-full bg-sky-500"></span>
+            <h2 class="font-mono text-xs font-medium tracking-wide text-neutral-900">images</h2>
+          </div>
+          <span class="rounded-full border border-neutral-300 px-2 py-0.5 font-mono text-[11px] text-neutral-400">
+            {{ focusedImageRows.length }}
+          </span>
+        </header>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse font-mono text-xs">
+            <thead>
               <tr>
-                <th class="border-b px-3 py-2">id</th>
-                <th class="border-b px-3 py-2">filename</th>
-                <th class="border-b px-3 py-2">width</th>
-                <th class="border-b px-3 py-2">height</th>
-                <th class="border-b px-3 py-2">file_size</th>
-                <th class="border-b px-3 py-2">upload_time</th>
-                <th class="border-b px-3 py-2">actions</th>
+                <th class="space-style-basic training-data-th">id</th>
+                <th class="space-style-basic training-data-th">filename</th>
+                <th class="space-style-basic training-data-th">width</th>
+                <th class="space-style-basic training-data-th">height</th>
+                <th class="space-style-basic training-data-th">file_size</th>
+                <th class="space-style-basic training-data-th">upload_time</th>
+                <th class="space-style-basic training-data-th">actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in focusedImageRows" :key="row.id" class="odd:bg-white even:bg-amber-50/60">
-                <td class="border-b px-3 py-2">{{ row.id }}</td>
-                <td class="border-b px-3 py-2">{{ row.filename }}</td>
-                <td class="border-b px-3 py-2">{{ row.width }}</td>
-                <td class="border-b px-3 py-2">{{ row.height }}</td>
-                <td class="border-b px-3 py-2">{{ row.file_size }}</td>
-                <td class="border-b px-3 py-2 whitespace-nowrap">{{ row.upload_time }}</td>
-                <td class="border-b px-3 py-2">
+              <tr
+                v-for="row in focusedImageRows"
+                :key="row.id"
+                class="hover:bg-neutral-50"
+              >
+                <td class="space-style-basic text-neutral-400">{{ row.id }}</td>
+                <td class="space-style-basic text-neutral-900">{{ row.filename }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.width }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.height }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.file_size }}</td>
+                <td class="space-style-basic whitespace-nowrap text-neutral-400">{{ row.upload_time }}</td>
+                <td class="space-style-basic">
                   <div class="flex gap-2">
-                    <button class="rounded border border-sky-300 px-3 py-1 text-sky-800 transition hover:bg-sky-100" @click="focusImage(row)">
-                      {{ focusConfirm[row.id] && focusedImageId === row.id ? "Cancel" : "Focus" }}
+                    <button
+                      class="rounded border border-neutral-300 px-2.5 py-1 text-[11px] text-neutral-500 transition hover:border-sky-400 hover:text-sky-600"
+                      @click="focusImage(row)"
+                    >
+                      {{ focusConfirm[row.id] && focusedImageId === row.id ? "cancel" : "focus" }}
                     </button>
                     <button
-                      class="rounded border px-3 py-1 transition"
+                      class="rounded border px-2.5 py-1 text-[11px] transition"
                       :class="deleteConfirm[row.id]
                         ? 'border-red-500 bg-red-500 text-white hover:bg-red-600'
-                        : 'border-red-300 text-red-700 hover:bg-red-50'"
+                        : 'border-neutral-300 text-neutral-500 hover:border-red-300 hover:text-red-600'"
                       @click="deleteFilterRow(row.id)"
                     >
-                      {{ deleteConfirm[row.id] ? "Sure?" : "Delete" }}
+                      {{ deleteConfirm[row.id] ? "sure?" : "delete" }}
                     </button>
                   </div>
                 </td>
               </tr>
               <tr v-if="focusedImageRows.length === 0">
-                <td class="px-3 py-6 text-center text-neutral-500" colspan="7">No rows found</td>
+                <td colspan="7" class="px-4 py-8 text-center text-neutral-300">no rows found</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <section class="mb-8 rounded-2xl border border-violet-200 bg-violet-50 p-4 shadow-sm">
-        <div class="mb-3 flex items-center justify-between">
-          <h2 class="text-lg font-semibold text-violet-950">image_features</h2>
-          <span class="rounded-full bg-violet-200 px-3 py-1 text-xs font-medium text-violet-950">{{ focusedFeatureRows.length }} rows</span>
-        </div>
-        <div class="overflow-x-auto rounded-lg border border-violet-200 bg-white">
-          <table class="min-w-full border-collapse text-sm">
-            <thead class="bg-violet-100 text-left">
+      <!-- image_features -->
+      <section class="mb-8 rounded-lg border border-neutral-300">
+        <header class="flex items-center justify-between border-b border-neutral-300 px-4 py-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>
+            <h2 class="font-mono text-xs font-medium tracking-wide text-neutral-900">image_features</h2>
+          </div>
+          <span class="rounded-full border border-neutral-300 px-2 py-0.5 font-mono text-[11px] text-neutral-400">
+            {{ focusedFeatureRows.length }}
+          </span>
+        </header>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse font-mono text-xs">
+            <thead>
               <tr>
-                <th class="border-b px-3 py-2">id</th>
-                <th class="border-b px-3 py-2">image_id</th>
-                <th class="border-b px-3 py-2">filename</th>
-                <th class="border-b px-3 py-2">brightness_mean</th>
-                <th class="border-b px-3 py-2">dynamic_range</th>
-                <th class="border-b px-3 py-2">saturation_mean</th>
-                <th class="border-b px-3 py-2">mean_rgb</th>
-                <th class="border-b px-3 py-2">unique_colors_ratio</th>
-                <th class="border-b px-3 py-2">sharpness</th>
-                <th class="border-b px-3 py-2">entropy</th>
+                <th class="space-style-basic training-data-th">id</th>
+                <th class="space-style-basic training-data-th">image_id</th>
+                <th class="space-style-basic training-data-th">filename</th>
+                <th class="space-style-basic training-data-th">brightness_mean</th>
+                <th class="space-style-basic training-data-th">dynamic_range</th>
+                <th class="space-style-basic training-data-th">saturation_mean</th>
+                <th class="space-style-basic training-data-th">mean_rgb</th>
+                <th class="space-style-basic training-data-th">unique_colors_ratio</th>
+                <th class="space-style-basic training-data-th">sharpness</th>
+                <th class="space-style-basic training-data-th">entropy</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in focusedFeatureRows" :key="row.id" class="odd:bg-white even:bg-violet-50/60">
-                <td class="border-b px-3 py-2">{{ row.id }}</td>
-                <td class="border-b px-3 py-2">{{ row.image_id }}</td>
-                <td class="border-b px-3 py-2">{{ row.filename }}</td>
-                <td class="border-b px-3 py-2">{{ row.brightness_mean }}</td>
-                <td class="border-b px-3 py-2">{{ row.dynamic_range }}</td>
-                <td class="border-b px-3 py-2">{{ row.saturation_mean }}</td>
-                <td class="border-b px-3 py-2">{{ row.mean_r }}, {{ row.mean_g }}, {{ row.mean_b }}</td>
-                <td class="border-b px-3 py-2">{{ row.unique_colors_ratio }}</td>
-                <td class="border-b px-3 py-2">{{ row.sharpness }}</td>
-                <td class="border-b px-3 py-2">{{ row.entropy }}</td>
+              <tr
+                v-for="row in focusedFeatureRows"
+                :key="row.id"
+                class="hover:bg-neutral-50"
+              >
+                <td class="space-style-basic text-neutral-400">{{ row.id }}</td>
+                <td class="space-style-basic text-neutral-400">{{ row.image_id }}</td>
+                <td class="space-style-basic text-neutral-900">{{ row.filename }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.brightness_mean }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.dynamic_range }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.saturation_mean }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.mean_r }}, {{ row.mean_g }}, {{ row.mean_b }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.unique_colors_ratio }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.sharpness }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.entropy }}</td>
               </tr>
               <tr v-if="focusedFeatureRows.length === 0">
-                <td class="px-3 py-6 text-center text-neutral-500" colspan="10">No rows found</td>
+                <td colspan="10" class="px-4 py-8 text-center text-neutral-300">no rows found</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <section class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm">
-        <div class="mb-3 flex items-center justify-between">
-          <h2 class="text-lg font-semibold text-emerald-950">user_filter_data</h2>
-          <span class="rounded-full bg-emerald-200 px-3 py-1 text-xs font-medium text-emerald-950">{{ focusedFilterRows.length }} rows</span>
-        </div>
-        <div class="overflow-x-auto rounded-lg border border-emerald-200 bg-white">
-          <table class="min-w-full border-collapse text-sm">
-            <thead class="bg-emerald-100 text-left">
+      <!-- user_filter_data -->
+      <section class="rounded-lg border border-neutral-300">
+        <header class="flex items-center justify-between border-b border-neutral-300 px-4 py-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+            <h2 class="font-mono text-xs font-medium tracking-wide text-neutral-900">user_filter_data</h2>
+          </div>
+          <span class="rounded-full border border-neutral-300 px-2 py-0.5 font-mono text-[11px] text-neutral-400">
+            {{ focusedFilterRows.length }}
+          </span>
+        </header>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse font-mono text-xs">
+            <thead>
               <tr>
-                <th class="border-b px-3 py-2">id</th>
-                <th class="border-b px-3 py-2">image_id</th>
-                <th class="border-b px-3 py-2">filename</th>
-                <th class="border-b px-3 py-2">brightness</th>
-                <th class="border-b px-3 py-2">vibrance</th>
-                <th class="border-b px-3 py-2">highlights_shadows</th>
-                <th class="border-b px-3 py-2">temperature</th>
-                <th class="border-b px-3 py-2">tint</th>
-                <th class="border-b px-3 py-2">updated_at</th>
+                <th class="space-style-basic training-data-th">id</th>
+                <th class="space-style-basic training-data-th">image_id</th>
+                <th class="space-style-basic training-data-th">filename</th>
+                <th class="space-style-basic training-data-th">brightness</th>
+                <th class="space-style-basic training-data-th">vibrance</th>
+                <th class="space-style-basic training-data-th">highlights_shadows</th>
+                <th class="space-style-basic training-data-th">temperature</th>
+                <th class="space-style-basic training-data-th">tint</th>
+                <th class="space-style-basic training-data-th">updated_at</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in focusedFilterRows" :key="row.id" class="odd:bg-white even:bg-emerald-50/60">
-                <td class="border-b px-3 py-2">{{ row.id }}</td>
-                <td class="border-b px-3 py-2">{{ row.image_id }}</td>
-                <td class="border-b px-3 py-2">{{ row.filename }}</td>
-                <td class="border-b px-3 py-2">{{ row.brightness }}</td>
-                <td class="border-b px-3 py-2">{{ row.vibrance }}</td>
-                <td class="border-b px-3 py-2">{{ row.highlights_shadows }}</td>
-                <td class="border-b px-3 py-2">{{ row.temperature }}</td>
-                <td class="border-b px-3 py-2">{{ row.tint }}</td>
-                <td class="border-b px-3 py-2 whitespace-nowrap">{{ row.updated_at }}</td>
+              <tr
+                v-for="row in focusedFilterRows"
+                :key="row.id"
+                class="hover:bg-neutral-50"
+              >
+                <td class="space-style-basic text-neutral-400">{{ row.id }}</td>
+                <td class="space-style-basic text-neutral-400">{{ row.image_id }}</td>
+                <td class="space-style-basic text-neutral-900">{{ row.filename }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.brightness }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.vibrance }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.highlights_shadows }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.temperature }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.tint }}</td>
+                <td class="space-style-basic whitespace-nowrap text-neutral-400">{{ row.updated_at }}</td>
               </tr>
               <tr v-if="focusedFilterRows.length === 0">
-                <td class="px-3 py-6 text-center text-neutral-500" colspan="9">No rows found</td>
+                <td colspan="9" class="px-4 py-8 text-center text-neutral-300">no rows found</td>
               </tr>
             </tbody>
           </table>

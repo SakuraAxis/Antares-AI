@@ -56,7 +56,7 @@ async function storeImageData() {
           class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50 duration-200"
           to="/training-data-history"
         >
-          Training Data History
+          Img Data History
         </RouterLink>
       </div>
 
