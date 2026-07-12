@@ -8,28 +8,40 @@ import { saveCanvasAsImage, analyzeOriginalImage, saveFilterData } from "../util
 const canvasWasmEl = ref<HTMLCanvasElement | null>(null);
 const wasmEditor = useImageEditorWasm(canvasWasmEl);
 
+const isImgDataStoring = ref(false);
+
 const activeEditor = () => wasmEditor;
 
 async function storeImageData() {
-  const editor = activeEditor();
+  if (isImgDataStoring.value) return;
 
-  if (editor.imageId.value === null) {
-    if (!editor.originalFile.value) return;
-    const analysisResult = await analyzeOriginalImage(editor.originalFile.value);
-    if (!analysisResult?.image_id) return;
-    editor.imageId.value = analysisResult.image_id;
+  isImgDataStoring.value = true;
+
+  try {
+    const editor = activeEditor();
+
+    if (editor.imageId.value === null) {
+      if (!editor.originalFile.value) return;
+
+      const analysisResult = await analyzeOriginalImage(editor.originalFile.value);
+      if (!analysisResult?.image_id) return;
+
+      editor.imageId.value = analysisResult.image_id;
+    }
+
+    await saveFilterData(editor.imageId.value, {
+      brightness: editor.brightness.value,
+      vibrance: editor.vibrance.value,
+      highlights_shadows: editor.highlightsShadows.value,
+      temperature: editor.temperature.value,
+      tint: editor.tint.value,
+      duotone: editor.duotone.value,
+      duotone_dark: editor.duotoneDark.value,
+      duotone_light: editor.duotoneLight.value,
+    });
+  } finally {
+    isImgDataStoring.value = false;
   }
-
-  await saveFilterData(editor.imageId.value, {
-    brightness: editor.brightness.value,
-    vibrance: editor.vibrance.value,
-    highlights_shadows: editor.highlightsShadows.value,
-    temperature: editor.temperature.value,
-    tint: editor.tint.value,
-    duotone: editor.duotone.value,
-    duotone_dark: editor.duotoneDark.value,
-    duotone_light: editor.duotoneLight.value,
-  });
 }
 </script>
 
@@ -48,8 +60,17 @@ async function storeImageData() {
           Save Image
         </button>
 
-        <button class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50 duration-200" @click="storeImageData">
-          Store Img Data
+        <button
+          class="rounded border border-neutral-300 px-4 py-2 transition duration-200"
+          :class="
+            isImgDataStoring
+              ? 'cursor-not-allowed bg-neutral-100 text-neutral-400'
+              : 'cursor-pointer hover:bg-neutral-50'
+          "
+          :disabled="isImgDataStoring"
+          @click="storeImageData"
+        >
+          {{ isImgDataStoring ? "Storing..." : "Store Img Data" }}
         </button>
 
         <RouterLink
