@@ -321,12 +321,20 @@ onMounted(loadAll);
                 <th class="space-style-basic training-data-th">image_id</th>
                 <th class="space-style-basic training-data-th">filename</th>
                 <th class="space-style-basic training-data-th">brightness_mean</th>
+                <th class="space-style-basic training-data-th">brightness_std</th>
+                <th class="space-style-basic training-data-th">brightness_p5/p50/p95</th>
                 <th class="space-style-basic training-data-th">dynamic_range</th>
+                <th class="space-style-basic training-data-th">black/white_clip</th>
                 <th class="space-style-basic training-data-th">saturation_mean</th>
+                <th class="space-style-basic training-data-th">saturation_std</th>
                 <th class="space-style-basic training-data-th">mean_rgb</th>
+                <th class="space-style-basic training-data-th">lab_a/b_mean</th>
+                <th class="space-style-basic training-data-th">dominant_colors</th>
                 <th class="space-style-basic training-data-th">unique_colors_ratio</th>
                 <th class="space-style-basic training-data-th">sharpness</th>
+                <th class="space-style-basic training-data-th">edge_density</th>
                 <th class="space-style-basic training-data-th">entropy</th>
+                <th class="space-style-basic training-data-th">local_contrast</th>
               </tr>
             </thead>
             <tbody>
@@ -339,15 +347,49 @@ onMounted(loadAll);
                 <td class="space-style-basic text-neutral-400">{{ row.image_id }}</td>
                 <td class="space-style-basic text-neutral-900">{{ row.filename }}</td>
                 <td class="space-style-basic training-data-td-common">{{ row.brightness_mean }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.brightness_std }}</td>
+                <td class="space-style-basic training-data-td-common whitespace-nowrap">
+                  {{ row.brightness_p5 }} / {{ row.brightness_p50 }} / {{ row.brightness_p95 }}
+                </td>
                 <td class="space-style-basic training-data-td-common">{{ row.dynamic_range }}</td>
+                <td class="space-style-basic training-data-td-common whitespace-nowrap">
+                  {{ row.black_clip_ratio }} / {{ row.white_clip_ratio }}
+                </td>
                 <td class="space-style-basic training-data-td-common">{{ row.saturation_mean }}</td>
-                <td class="space-style-basic training-data-td-common">{{ row.mean_r }}, {{ row.mean_g }}, {{ row.mean_b }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.saturation_std }}</td>
+                <td class="space-style-basic training-data-td-common whitespace-nowrap">
+                  {{ row.mean_r }}, {{ row.mean_g }}, {{ row.mean_b }}
+                </td>
+                <td class="space-style-basic training-data-td-common whitespace-nowrap">
+                  {{ row.lab_a_mean }} / {{ row.lab_b_mean }}
+                </td>
+                <td class="space-style-basic">
+                  <div class="flex items-center gap-1.5">
+                    <div
+                      v-for="(c, idx) in row.dominant_colors?.slice(0, 5)"
+                      :key="idx"
+                      class="flex items-center gap-1"
+                      :title="`rgb(${c.rgb.join(',')}) — ${(c.percentage * 100).toFixed(1)}%`"
+                    >
+                      <span
+                        class="h-3.5 w-3.5 rounded-full border border-neutral-300"
+                        :style="{ backgroundColor: `rgb(${c.rgb.join(',')})` }"
+                      ></span>
+                      <span class="text-[10px] text-neutral-400">
+                        {{ (c.percentage * 100).toFixed(0) }}%
+                      </span>
+                    </div>
+                    <span v-if="!row.dominant_colors?.length" class="text-neutral-300">—</span>
+                  </div>
+                </td>
                 <td class="space-style-basic training-data-td-common">{{ row.unique_colors_ratio }}</td>
                 <td class="space-style-basic training-data-td-common">{{ row.sharpness }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.edge_density }}</td>
                 <td class="space-style-basic training-data-td-common">{{ row.entropy }}</td>
+                <td class="space-style-basic training-data-td-common">{{ row.local_contrast }}</td>
               </tr>
               <tr v-if="focusedFeatureRows.length === 0">
-                <td colspan="10" class="px-4 py-8 text-center text-neutral-300">no rows found</td>
+                <td colspan="17" class="px-4 py-8 text-center text-neutral-300">no rows found</td>
               </tr>
             </tbody>
           </table>
