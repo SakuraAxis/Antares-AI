@@ -109,7 +109,7 @@ class ImageAnalyzer:
         13. mean_b - B channel mean
         14. lab_a_mean - LAB A channel mean (Green ↔ Magenta)
         15. lab_b_mean - LAB B channel mean (Blue ↔ Yellow)
-        16. dominant_colors - Top 5 dominant colors via K-Means
+        16. dominant_colors - Top 10 dominant colors via K-Means
         17. unique_colors_ratio - Unique colors / Total pixels (color complexity)
         """
         # 9-10. HSV saturation
@@ -128,8 +128,8 @@ class ImageAnalyzer:
         lab_a_mean = float(np.mean(lab[:, :, 1]))  # A channel: Green ↔ Magenta
         lab_b_mean = float(np.mean(lab[:, :, 2]))  # B channel: Blue ↔ Yellow
         
-        # 16. Dominant colors (K-Means, top 5)
-        dominant_colors = self._extract_dominant_colors(img_bgr, k=5)
+        # 16. Dominant colors (K-Means, top 10)
+        dominant_colors = self._extract_dominant_colors(img_bgr, k=10)
         
         # 17. Color complexity (using Pillow)
         unique_colors_ratio = self._calculate_unique_colors_ratio(pil_image)

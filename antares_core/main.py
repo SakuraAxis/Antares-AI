@@ -3,6 +3,7 @@ from fastapi import FastAPI, UploadFile, File, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 from routers.filter_data import router as filter_data_router
+from routers.prediction import router as prediction_router
 from routers.training_data_history import router as training_data_history_router
 from routers.training_images import router as training_images_router
 
@@ -30,5 +31,6 @@ app.add_middleware(
 )
 
 app.include_router(filter_data_router)
+app.include_router(prediction_router)
 app.include_router(training_data_history_router)
 app.include_router(training_images_router)

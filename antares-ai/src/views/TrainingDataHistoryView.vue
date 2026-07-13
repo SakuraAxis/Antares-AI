@@ -315,7 +315,7 @@ onMounted(loadAll);
                 <td class="space-style-basic">
                   <div class="flex items-center gap-1.5">
                     <div
-                      v-for="(c, idx) in row.dominant_colors?.slice(0, 5)"
+                      v-for="(c, idx) in row.dominant_colors?.slice(0, 10)"
                       :key="idx"
                       class="flex items-center gap-1"
                       :title="`rgb(${c.rgb.join(',')}) — ${(c.percentage * 100).toFixed(1)}%`"
@@ -368,6 +368,7 @@ onMounted(loadAll);
                 <th class="space-style-basic training-data-th">highlights_shadows</th>
                 <th class="space-style-basic training-data-th">temperature</th>
                 <th class="space-style-basic training-data-th">tint</th>
+                <th class="space-style-basic training-data-th">duotone</th>
                 <th class="space-style-basic training-data-th">updated_at</th>
               </tr>
             </thead>
@@ -385,10 +386,25 @@ onMounted(loadAll);
                 <td class="space-style-basic training-data-td-common">{{ row.highlights_shadows }}</td>
                 <td class="space-style-basic training-data-td-common">{{ row.temperature }}</td>
                 <td class="space-style-basic training-data-td-common">{{ row.tint }}</td>
+                <td class="space-style-basic">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[11px] text-neutral-400">{{ row.duotone }}</span>
+                    <span
+                      class="h-3.5 w-3.5 rounded-full border border-neutral-300"
+                      :style="{ backgroundColor: row.duotone_dark }"
+                      :title="row.duotone_dark"
+                    ></span>
+                    <span
+                      class="h-3.5 w-3.5 rounded-full border border-neutral-300"
+                      :style="{ backgroundColor: row.duotone_light }"
+                      :title="row.duotone_light"
+                    ></span>
+                  </div>
+                </td>
                 <td class="space-style-basic whitespace-nowrap text-neutral-400">{{ row.updated_at }}</td>
               </tr>
               <tr v-if="focusedFilterRows.length === 0">
-                <td colspan="9" class="px-4 py-8 text-center text-neutral-300">no rows found</td>
+                <td colspan="10" class="px-4 py-8 text-center text-neutral-300">no rows found</td>
               </tr>
             </tbody>
           </table>

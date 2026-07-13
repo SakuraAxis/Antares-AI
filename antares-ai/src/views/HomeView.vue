@@ -3,12 +3,25 @@ import { ref } from "vue";
 import AppHeader from "../components/AppHeader.vue";
 import ImageCanvas from "../components/ImageCanvas.vue";
 import { useImageEditorWasm } from "../composables/useImageEditorWasm";
-import { saveCanvasAsImage, analyzeOriginalImage, saveFilterData } from "../utils/images";
+import {
+  saveCanvasAsImage,
+  analyzeOriginalImage,
+  saveFilterData,
+  predictFilterData,
+} from "../utils/images";
+import { okLabToRGB } from "../utils/color";
+
+function rgbToHex(rgb: { r: number; g: number; b: number }) {
+  return `#${[rgb.r, rgb.g, rgb.b]
+    .map((value) => value.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
 
 const canvasWasmEl = ref<HTMLCanvasElement | null>(null);
 const wasmEditor = useImageEditorWasm(canvasWasmEl);
 
 const isImgDataStoring = ref(false);
+const isPredicting = ref(false);
 
 const activeEditor = () => wasmEditor;
 
@@ -43,6 +56,62 @@ async function storeImageData() {
     isImgDataStoring.value = false;
   }
 }
+
+async function oneClickPredict() {
+  if (isPredicting.value) return;
+
+  isPredicting.value = true;
+
+  try {
+    const editor = activeEditor();
+
+    if (editor.imageId.value === null) {
+      if (!editor.originalFile.value) return;
+
+      const analysisResult = await analyzeOriginalImage(editor.originalFile.value);
+      if (!analysisResult?.image_id) return;
+
+      editor.imageId.value = analysisResult.image_id;
+    }
+
+    if (!editor.originalFile.value) return;
+
+    const result = await predictFilterData(editor.originalFile.value);
+    if (!result?.prediction) return;
+
+    editor.brightness.value = result.prediction.brightness;
+    editor.vibrance.value = result.prediction.vibrance;
+    editor.highlightsShadows.value = result.prediction.highlights_shadows;
+    editor.temperature.value = result.prediction.temperature;
+    editor.tint.value = result.prediction.tint;
+    editor.duotone.value = result.prediction.duotone;
+    editor.duotoneDark.value = rgbToHex(
+      okLabToRGB({
+        l: result.prediction.duotone_dark_l,
+        a: result.prediction.duotone_dark_a,
+        b: result.prediction.duotone_dark_b,
+      })
+    );
+    editor.duotoneLight.value = rgbToHex(
+      okLabToRGB({
+        l: result.prediction.duotone_light_l,
+        a: result.prediction.duotone_light_a,
+        b: result.prediction.duotone_light_b,
+      })
+    );
+
+    editor.onBrightnessInput();
+    editor.onVibranceInput();
+    editor.onHighlightsShadowsInput();
+    editor.onTemperatureInput();
+    editor.onTintInput();
+    editor.onDuotoneInput();
+    editor.onDuotoneDarkInput();
+    editor.onDuotoneLightInput();
+  } finally {
+    isPredicting.value = false;
+  }
+}
 </script>
 
 <template>
@@ -55,6 +124,19 @@ async function storeImageData() {
           Open Image
           <input class="hidden" type="file" accept="image/*" @change="activeEditor().openImage" />
         </label>
+
+        <button
+          class="rounded border border-neutral-300 px-4 py-2 transition duration-200"
+          :class="
+            isPredicting
+              ? 'cursor-not-allowed bg-neutral-100 text-neutral-400'
+              : 'cursor-pointer hover:bg-neutral-50'
+          "
+          :disabled="isPredicting"
+          @click="oneClickPredict"
+        >
+          {{ isPredicting ? "Predicting..." : "Use Xin 1.0 Model" }}
+        </button>
 
         <button class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50 duration-200" @click="saveCanvasAsImage(canvasWasmEl)">
           Save Image

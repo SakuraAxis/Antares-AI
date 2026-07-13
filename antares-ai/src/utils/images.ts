@@ -73,6 +73,19 @@ export interface FilterDataPayload {
   duotone_light: string;
 }
 
+export interface PredictFilterDataResult {
+  status: string;
+  image_id: number | null;
+  prediction: FilterDataPayload & {
+    duotone_dark_l: number;
+    duotone_dark_a: number;
+    duotone_dark_b: number;
+    duotone_light_l: number;
+    duotone_light_a: number;
+    duotone_light_b: number;
+  };
+}
+
 export async function saveFilterData(
   imageId: number,
   filterData: FilterDataPayload
@@ -99,6 +112,34 @@ export async function saveFilterData(
     return data;
   } catch (error) {
     console.error('Filter data transmission failed :', error);
+    return null;
+  }
+}
+
+export async function predictFilterData(
+  file: File
+): Promise<PredictFilterDataResult | null> {
+  const formData = new FormData();
+  formData.append('file', file, file.name);
+
+  try {
+    console.log('Sending original image for prediction ...');
+
+    const response = await fetch(`${API_BASE_URL}/predict-filter-data`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`HTTP error ! Status code : ${response.status}, Content : ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log('Prediction successful :', data);
+    return data;
+  } catch (error) {
+    console.error('Prediction failed :', error);
     return null;
   }
 }
