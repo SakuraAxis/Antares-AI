@@ -106,6 +106,18 @@ npm install
 npm run dev
 ```
 
+### Step 4. AI Training
+
+after you collect enough training data ( you can view them at `http://localhost:5173/training-data-history` )
+
+go to `/antares_core`, run below :
+
+```shell
+python -m uv run train_model.py
+```
+
+your custom model will be saved to `/antares_core/artifacts`
+
 ## Project Detail / Debug
 
 ### Create new migration via Alembic
