@@ -25,10 +25,15 @@ TARGET_COLUMNS = [
     "duotone_light_b",
 ]
 
-MODEL_DIR = Path(__file__).resolve().parent.parent / "artifacts"
+MODEL_DIR = Path(__file__).resolve().parent.parent.parent / "models"
+
 MODEL_PATH = MODEL_DIR / "filter_predictor.pt"
 SCALER_PATH = MODEL_DIR / "filter_predictor_scaler.json"
 TARGET_SCALER_PATH = MODEL_DIR / "filter_predictor_target_scaler.json"
+
+NEWEST_XIN_MODEL_PATH = MODEL_DIR / "Xin1.0.pt"
+NEWEST_XIN_SCALER_PATH = MODEL_DIR / "Xin1.0_scaler.json"
+NEWEST_XIN_TARGET_SCALER_PATH = MODEL_DIR / "Xin1.0_target_scaler.json"
 
 
 @dataclass
@@ -60,7 +65,11 @@ def save_scaler(scaler: FeatureScaler) -> None:
 
 
 def load_scaler() -> FeatureScaler:
-    state = json.loads(SCALER_PATH.read_text(encoding="utf-8"))
+    if not SCALER_PATH.exists():
+        state = json.loads(NEWEST_XIN_SCALER_PATH.read_text(encoding="utf-8"))
+    else:
+        state = json.loads(SCALER_PATH.read_text(encoding="utf-8"))
+
     return FeatureScaler.from_state_dict(state)
 
 
@@ -71,9 +80,15 @@ def save_model_state(model: torch.nn.Module) -> None:
 
 def load_model_state(model: torch.nn.Module) -> torch.nn.Module:
     try:
-        state_dict = torch.load(MODEL_PATH, map_location="cpu", weights_only=True)
+        if not MODEL_PATH.exists():
+            state_dict = torch.load(NEWEST_XIN_MODEL_PATH, map_location="cpu", weights_only=True)
+        else:
+            state_dict = torch.load(MODEL_PATH, map_location="cpu", weights_only=True)
     except TypeError:
-        state_dict = torch.load(MODEL_PATH, map_location="cpu")
+        if not MODEL_PATH.exists():
+            state_dict = torch.load(NEWEST_XIN_MODEL_PATH, map_location="cpu")
+        else:
+            state_dict = torch.load(MODEL_PATH, map_location="cpu")
     model.load_state_dict(state_dict)
     model.eval()
     return model
@@ -111,6 +126,10 @@ def save_target_scaler(scaler: TargetScaler) -> None:
 
 
 def load_target_scaler() -> TargetScaler:
-    state = json.loads(TARGET_SCALER_PATH.read_text(encoding="utf-8"))
+    if not TARGET_SCALER_PATH.exists():
+        state = json.loads(NEWEST_XIN_TARGET_SCALER_PATH.read_text(encoding="utf-8"))
+    else:
+        state = json.loads(TARGET_SCALER_PATH.read_text(encoding="utf-8"))
+
     return TargetScaler.from_state_dict(state)
 

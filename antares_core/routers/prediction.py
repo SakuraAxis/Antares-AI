@@ -12,6 +12,8 @@ from features.image_analyzer import ImageAnalyzer
 from ml.filter_predictor import FilterPredictor
 from ml.ml_utils import load_model_state, load_scaler, load_target_scaler
 
+N_DOMINANT_COLORS = 10
+
 router = APIRouter(tags=["prediction"])
 analyzer = ImageAnalyzer()
 
@@ -76,7 +78,7 @@ def _build_feature_vector(features: Any) -> list[float]:
     ]
 
     dominant_colors = features.get("dominant_colors") or []
-    for idx in range(5):
+    for idx in range(N_DOMINANT_COLORS):
         color = dominant_colors[idx] if idx < len(dominant_colors) else {}
         rgb = color.get("rgb", [0, 0, 0])
         percentage = float(color.get("percentage", 0.0))

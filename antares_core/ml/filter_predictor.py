@@ -5,7 +5,7 @@ from torch import nn
 
 
 class FilterPredictor(nn.Module):
-    def __init__(self, input_dim: int = 40, hidden_dims: tuple[int, int] = (128, 64), output_dim: int = 12):
+    def __init__(self, input_dim: int = 60, hidden_dims: tuple[int, int] = (128, 64), output_dim: int = 12):
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(input_dim, hidden_dims[0]),

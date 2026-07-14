@@ -20,7 +20,7 @@ from .ml_utils import (
 )
 
 SEED = 42
-
+N_DOMINANT_COLORS = 10
 
 def _set_seed(seed: int = SEED) -> None:
     np.random.seed(seed)
@@ -58,7 +58,7 @@ def _flatten_image_features(feature: ImageFeature) -> list[float]:
     ]
 
     dominant_colors = feature.dominant_colors or []
-    for idx in range(5):
+    for idx in range(N_DOMINANT_COLORS):
         color = dominant_colors[idx] if idx < len(dominant_colors) else {}
         rgb = color.get("rgb", [0, 0, 0])
         percentage = float(color.get("percentage", 0.0))
@@ -210,9 +210,9 @@ def train(
     save_model_state(model)
     save_scaler(feature_scaler)
     save_target_scaler(target_scaler)
-    print("Saved model to artifacts/filter_predictor.pt")
-    print("Saved feature scaler to artifacts/filter_predictor_scaler.json")
-    print("Saved target scaler to artifacts/filter_predictor_target_scaler.json")
+    print("Saved model to project-root models/filter_predictor.pt")
+    print("Saved feature scaler to project-root models/filter_predictor_scaler.json")
+    print("Saved target scaler to project-root models/filter_predictor_target_scaler.json")
 
 
 def main() -> None:
