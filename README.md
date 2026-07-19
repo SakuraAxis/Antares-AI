@@ -34,6 +34,10 @@ Iris uses FastAPI for backend APIs and GUI integration. FastAPI is MIT licensed.
 
 Iris uses WGPU, Vue3 & Tailwind CSS for GUI showing. And uses Vite as build tool. Vue3, Vite & Tailwind CSS licensed under the MIT License. WGPU licensed under the MIT License & Apache-2.0 License.
 
+![showcase1](https://github.com/SakuraAxis/Antares-AI/blob/main/showcase/showcase-2607-1.webp)
+
+![showcase2](https://github.com/SakuraAxis/Antares-AI/blob/main/showcase/showcase-2607-2.webp)
+
 ## How To Use
 
 install Rust : [https://rust-lang.org/](https://rust-lang.org/)
@@ -116,7 +120,7 @@ go to `/antares_core`, run below :
 python -m uv run train_model.py
 ```
 
-your custom model will be saved to `/antares_core/artifacts`
+your custom model will be saved to `/models`
 
 ## Project Detail / Debug
 

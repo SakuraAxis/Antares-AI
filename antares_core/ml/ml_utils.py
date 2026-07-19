@@ -31,9 +31,9 @@ MODEL_PATH = MODEL_DIR / "filter_predictor.pt"
 SCALER_PATH = MODEL_DIR / "filter_predictor_scaler.json"
 TARGET_SCALER_PATH = MODEL_DIR / "filter_predictor_target_scaler.json"
 
-NEWEST_XIN_MODEL_PATH = MODEL_DIR / "Xin1.0.pt"
-NEWEST_XIN_SCALER_PATH = MODEL_DIR / "Xin1.0_scaler.json"
-NEWEST_XIN_TARGET_SCALER_PATH = MODEL_DIR / "Xin1.0_target_scaler.json"
+NEWEST_XIN_MODEL_PATH = MODEL_DIR / "Xin1.5.pt"
+NEWEST_XIN_SCALER_PATH = MODEL_DIR / "Xin1.5_scaler.json"
+NEWEST_XIN_TARGET_SCALER_PATH = MODEL_DIR / "Xin1.5_target_scaler.json"
 
 
 @dataclass

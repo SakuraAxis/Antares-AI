@@ -135,7 +135,7 @@ async function oneClickPredict() {
           :disabled="isPredicting"
           @click="oneClickPredict"
         >
-          {{ isPredicting ? "Predicting..." : "Use Xin 1.0 Model" }}
+          {{ isPredicting ? "Predicting..." : "Use Xin 1.5 Model" }}
         </button>
 
         <button class="cursor-pointer rounded border border-neutral-300 px-4 py-2 transition hover:bg-neutral-50 duration-200" @click="saveCanvasAsImage(canvasWasmEl)">

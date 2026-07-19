@@ -4,3 +4,7 @@
 !/models/Xin1.0.pt
 !/models/Xin1.0_scaler.json
 !/models/Xin1.0_target_scaler.json
+
+!/models/Xin1.5.pt
+!/models/Xin1.5_scaler.json
+!/models/Xin1.5_target_scaler.json
