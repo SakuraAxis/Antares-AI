@@ -65,15 +65,6 @@ async function oneClickPredict() {
   try {
     const editor = activeEditor();
 
-    if (editor.imageId.value === null) {
-      if (!editor.originalFile.value) return;
-
-      const analysisResult = await analyzeOriginalImage(editor.originalFile.value);
-      if (!analysisResult?.image_id) return;
-
-      editor.imageId.value = analysisResult.image_id;
-    }
-
     if (!editor.originalFile.value) return;
 
     const result = await predictFilterData(editor.originalFile.value);
